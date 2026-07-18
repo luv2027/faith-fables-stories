@@ -14,6 +14,7 @@
     "db:seed": "tsx --env-file=.env db/seed.ts"
   },
   "dependencies": {
+    "@vercel/blob": "^2.6.1",
     "drizzle-orm": "^0.45.2",
     "mammoth": "^1.12.0",
     "next": "16.2.10",

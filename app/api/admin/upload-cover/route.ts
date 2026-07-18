@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { put } from "@vercel/blob";
 import type { NextRequest } from "next/server";
 import { getCurrentUser } from "@/lib/auth/session";
 
@@ -43,9 +44,27 @@ export async function POST(req: NextRequest) {
 
   const bytes = Buffer.from(await file.arrayBuffer());
   const name = `${randomUUID()}.${ext}`;
-  const dir = join(process.cwd(), "public", "uploads", "covers");
-  await mkdir(dir, { recursive: true });
-  await writeFile(join(dir, name), bytes);
 
-  return Response.json({ url: `/uploads/covers/${name}` });
+  try {
+    // Preferred: object storage (works on serverless like Vercel).
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put(`covers/${name}`, bytes, {
+        access: "public",
+        contentType: file.type,
+      });
+      return Response.json({ url: blob.url });
+    }
+
+    // Fallback: local filesystem (dev / persistent self-hosted server).
+    const dir = join(process.cwd(), "public", "uploads", "covers");
+    await mkdir(dir, { recursive: true });
+    await writeFile(join(dir, name), bytes);
+    return Response.json({ url: `/uploads/covers/${name}` });
+  } catch (err) {
+    console.error("upload-cover error:", err);
+    return Response.json(
+      { error: "Could not save the image. Please try again." },
+      { status: 500 },
+    );
+  }
 }
