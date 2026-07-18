@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* Dark mode driven by a `.dark` class on <html> (toggled by ThemeToggle). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Logo-matched palette (light): lotus rose + gold + indigo-plum */
+  --color-bg: #fdf8f6; /* soft blush white */
+  --color-surface: #ffffff;
+  --color-surface-raised: #f8edf2; /* pale rose */
+  --color-ink: #26204a; /* deep indigo-plum (from the "Faith" navy) */
+  --color-muted: #7c6e82; /* muted mauve */
+  --color-border: #eedce5; /* soft rose */
+  --color-accent: #ce2a72; /* lotus rose-magenta */
+  --color-accent-hover: #b21f60;
+  --color-accent-soft: #d9a441; /* gold */
+
+  /* Radii */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Fonts (variables injected by next/font in layout.tsx) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-reading: var(--font-newsreader), ui-serif, Georgia, serif;
+}
+
+/* Logo-matched palette (dark — deep plum, never pure black) */
+.dark {
+  --color-bg: #16121d;
+  --color-surface: #1f1929;
+  --color-surface-raised: #2a2136;
+  --color-ink: #f2e8ee;
+  --color-muted: #ae9fb4;
+  --color-border: #352a40;
+  --color-accent: #ec5a97;
+  --color-accent-hover: #f284b0;
+  --color-accent-soft: #e6b84d;
+}
+
+html {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hero warm wash */
+.gradient-warm {
+  background:
+    radial-gradient(
+      120% 90% at 50% -10%,
+      rgba(206, 42, 114, 0.16) 0%,
+      rgba(217, 164, 65, 0.16) 42%,
+      transparent 78%
+    ),
+    var(--color-bg);
+}
+.dark .gradient-warm {
+  background:
+    radial-gradient(
+      120% 90% at 50% -10%,
+      rgba(236, 90, 151, 0.22) 0%,
+      rgba(217, 164, 65, 0.12) 45%,
+      transparent 78%
+    ),
+    var(--color-bg);
+}
+
+/* Calm entrance: fade + rise once. Stagger via inline --delay. */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-rise {
+  animation: fade-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Long-form reading column */
+.reading {
+  font-family: var(--font-reading);
+  font-size: 1.25rem; /* ~20px */
+  line-height: 1.7;
+  max-width: 66ch;
+}
+.reading p {
+  margin-block: 1em;
+}
+.reading blockquote {
+  margin-block: 1.4em;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--color-accent);
+  font-style: italic;
+  color: var(--color-ink);
+}
+
+/* Hide scrollbars on horizontal snap rows while keeping scroll */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-rise {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

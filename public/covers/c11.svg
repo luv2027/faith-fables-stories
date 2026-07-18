@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-label="Abstract warm gradient cover">
+  <defs>
+    <linearGradient id="g10" gradientTransform="rotate(115)">
+      <stop offset="0%" stop-color="#F7E1EC"/>
+      <stop offset="55%" stop-color="#E28CB6"/>
+      <stop offset="100%" stop-color="#B21F60"/>
+    </linearGradient>
+    <radialGradient id="r10" cx="70%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g10)"/>
+  <rect width="800" height="1000" fill="url(#r10)"/>
+  <circle cx="560" cy="450" r="240" fill="#FFFFFF" opacity="0.06"/>
+  <circle cx="380" cy="640" r="220" fill="#26204A" opacity="0.06"/>
+</svg>
