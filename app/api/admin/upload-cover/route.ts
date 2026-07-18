@@ -55,6 +55,17 @@ export async function POST(req: NextRequest) {
       return Response.json({ url: blob.url });
     }
 
+    // On serverless (no writable disk) without Blob configured, fail clearly.
+    if (process.env.VERCEL) {
+      return Response.json(
+        {
+          error:
+            "Image storage isn't configured. Add the Vercel Blob read-write token (BLOB_READ_WRITE_TOKEN) and redeploy.",
+        },
+        { status: 500 },
+      );
+    }
+
     // Fallback: local filesystem (dev / persistent self-hosted server).
     const dir = join(process.cwd(), "public", "uploads", "covers");
     await mkdir(dir, { recursive: true });
